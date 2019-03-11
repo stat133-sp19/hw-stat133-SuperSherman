@@ -1,0 +1,51 @@
+---
+title: "report"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+dat<-read.csv("../data/shots-data.csv")
+
+#Effective Shooting % by Player
+
+dat %>%
+group_by(name) %>%
+select(name, shot_made_flag) %>%
+summarise(
+total = n(),
+made = sum(shot_made_flag == 'made shot')
+) %>%
+mutate(perc_made = 100 * made / total) %>%
+arrange(desc(perc_made))
+
+```
+```{r}
+
+#2PT Effective Shooting % by Player
+dat %>%
+filter(shot_type == '2PT Field Goal') %>%
+group_by(name) %>%
+select(name, shot_made_flag) %>%
+summarise(
+total = n(),
+made = sum(shot_made_flag == 'made shot')
+) %>%
+mutate(perc_made = 100 * made / total) %>%
+arrange(desc(perc_made))
+```
+
+```{r}
+#3PT Effective Shooting % by Player
+dat %>%
+filter(shot_type == '3PT Field Goal') %>%
+group_by(name) %>%
+select(name, shot_made_flag) %>%
+summarise(
+total = n(),
+made = sum(shot_made_flag == 'made shot')
+) %>%
+mutate(perc_made = 100 * made / total) %>%
+arrange(desc(perc_made))
+```
+
