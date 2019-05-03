@@ -1,0 +1,72 @@
+
+---
+title: "Getting Started with binomial"
+author: "Sherman Wang"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to binomial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(collapse = T, comment = "#>")
+library(binomial)
+```
+
+
+###Private Checker Functions
+Those functions check whether inputs are valid. Examples are listed down below. The end users will not be able to invoke those. Those are only used to check whether the inputs are correct
+1)Check Probability
+It is a private auxiliary function to test if an input prob is a valid probability value (i.e. 0 < p < 1). check_prob() takes one input: prob. If prob is valid, then check_prob() should return TRUE. If prob is invalid, then check_prob() should stop() execution with an error—e.g. something like 'invalid prob value', or 'p has to be a number betwen 0 and 1'.
+```{r eval=FALSE}
+check_prob <- function(prob) {
+  if (!is.numeric(prob)) {
+    stop("invalid prob value")
+  }
+
+  if (any(prob < 0) | any(prob > 1)) {
+    stop("invalid prob value")
+  }
+  TRUE
+}
+```
+When we enter check_prob(0.8) into the function, it should return TRUE. When we enter check_prob(-1.1), it should return false because p can't be smaller than 0. Similiarly like this, there are two other checker functions that check for valid number of success and valid number of trials.
+
+
+## Private Auxiliary Functions
+
+All these functions take two arguments: trials and prob. And return the corresponding
+value from the computed summary measure. Those functions are going to be called within the main functions. You can consider them as building blocks for the main functions:
+
+
+## Main Functions
+
+Now we are going to create main functions, those are the functions that are visible to the end users. Those functions are going to give us the probaility and the dataframes of probability distributions. 
+
+###bin_probability
+bin_probability should give us the an object of class "bindis and data.frame". Basically it gives us a dataframe with number of success and their corresponding probability. 
+plot.bindis()shows a bar plot with number of successes on the x axis and probability on the y axis
+
+
+
+###bin_cumulative and plot.bincum
+This function should return a data frame with both the probability distribution and thecumulative probabilities: sucesses in the first column, probability in the second column,and cumulative in the third column.
+
+
+the plotting method will gives us a graph description the cumulative probability for getting certain number of successs. 
+
+
+bin_variable function should creates an object of class "binvar". print.binvar(), summary.binvar(), and print.summary.binvar() should give us a printed out nice summary of our binomial random variable, including the following elements.
+trials: number of trials
+– prob: probability of success
+– mean: mean or expected value
+– variance: variance
+– mode: mode
+– skewness: skewness
+– kurtosis: kurtosis
+
+
+
+For our packages, we also create a test package that will test whether our functions will give us correct output. Those tests should not be visible to the users. 
+
